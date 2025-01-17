@@ -1,27 +1,34 @@
 ﻿using FootballClub.Data;
 using FootballClub.Entity;
 using FootballClub.Entity.Dtos.Club;
+using FootballClub.Logic.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FootballClub.Logic
+namespace FootballClub.Logic.Logic
 {
     public class FootballClubLogic
     {
 
         Repository<Club> repo;
+        DtoProvider dtoProvider;
 
-        public FootballClubLogic(Repository<Club> repo)
+        public FootballClubLogic(Repository<Club> repo, DtoProvider dtoProvider)
         {
             this.repo = repo;
+            this.dtoProvider = dtoProvider;
         }
 
         public void AddClub(ClubCreateUpdateDto dto)
         {
-            Club c = new Club(dto.ClubName, dto.YearFounded, dto.StadiumName, dto.StadiumCapacity, dto.Trophies, dto.Country);
+
+            Club c = dtoProvider.Mapper.Map<Club>(dto);
+
+
+
             //ha nincs ilyen nevű csapat, akkor elmentjük
             if (repo.GetAll().FirstOrDefault(x => x.ClubName == c.ClubName) == null)
             {
@@ -35,13 +42,8 @@ namespace FootballClub.Logic
 
         public IEnumerable<ClubShortViewDto> GetAllClubs()
         {
-            return repo.GetAll().Select(x => new ClubShortViewDto
-            {
-                Id = x.Id,
-                ClubName = x.ClubName,
-                YearFounded = x.YearFounded,
-                Country = x.Country
-            });
+            return repo.GetAll().Select(x =>
+            dtoProvider.Mapper.Map<ClubShortViewDto>(x));
         }
 
 
@@ -53,13 +55,16 @@ namespace FootballClub.Logic
         public void UpdateClub(string id, ClubCreateUpdateDto dto)
         {
             var old = repo.FindById(id);
-            old.ClubName = dto.ClubName;
-            old.YearFounded = dto.YearFounded;
-            old.StadiumName = dto.StadiumName;
-            old.StadiumCapacity = dto.StadiumCapacity;
-            old.Trophies = dto.Trophies;
-            old.Country = dto.Country;
+            dtoProvider.Mapper.Map(dto, old);
             repo.Update(old);
+        }
+
+
+        public ClubViewDto GetClub(string id)
+        {
+            var club = repo.FindById(id);
+
+            return dtoProvider.Mapper.Map<ClubViewDto>(club);
         }
     }
 }

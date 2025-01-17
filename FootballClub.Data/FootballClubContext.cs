@@ -1,26 +1,25 @@
 ﻿using FootballClub.Entity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FootballClub.Data
 {
-    public class FootballClubContext : DbContext
+    public class FootballClubContext : IdentityDbContext
     {
 
         public DbSet<Club> Clubs { get; set; }
 
         public DbSet<Player> Players { get; set; }
 
+        public DbSet<AppUser> AppUsers { get; set; }
 
-       
+
+
         public FootballClubContext(DbContextOptions<FootballClubContext> ctx)
             : base(ctx)
         {
-            Database.EnsureCreated();
+            
 
         }
 

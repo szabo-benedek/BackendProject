@@ -16,6 +16,8 @@ namespace FootballClub.Entity.Dtos.Club
 
         public string Country { get; set; } = "";
 
-        
+
+        public double AveragePlayerAge { get; set; } = 0;
+
     }
 }

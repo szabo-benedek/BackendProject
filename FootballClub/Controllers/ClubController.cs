@@ -1,7 +1,9 @@
 ﻿using FootballClub.Data;
 using FootballClub.Entity;
 using FootballClub.Entity.Dtos.Club;
-using FootballClub.Logic;
+using FootballClub.Entity.Helpers;
+using FootballClub.Logic.Logic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballClub.Endpoint.Controllers
@@ -19,10 +21,12 @@ namespace FootballClub.Endpoint.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public void AddClub(ClubCreateUpdateDto dto)
         {
-            logic.AddClub(dto);
 
+            logic.AddClub(dto);
+            
         }
 
 
@@ -32,16 +36,24 @@ namespace FootballClub.Endpoint.Controllers
             return logic.GetAllClubs();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void DeleteClub(string id)
         {
             logic.DeleteClub(id);
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public void UpdateClub(string id,[FromBody] ClubCreateUpdateDto dto)
         {
             logic.UpdateClub(id, dto);
+        }
+
+        [HttpGet("{id}")]
+        public ClubViewDto GetClub(string id)
+        {
+            return logic.GetClub(id);
         }
 
 

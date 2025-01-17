@@ -57,8 +57,8 @@ namespace FootballClub.Entity
         [NotMapped]
         public virtual Club? Club { get; set; }
 
-        //[StringLength(50)]
-        //public string UserId { get; set; }
+        [StringLength(50)]
+        public string UserId { get; set; }
     }
 
 }

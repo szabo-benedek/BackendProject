@@ -12,6 +12,10 @@ namespace FootballClub.Entity
 {
     public class Player : IIdEntity
     {
+        public Player()
+        {
+                
+        }
         public Player(string clubId, string name, int age, string nationality, string position, int appearances, int goals, int assists, int yellowCards, int redCards)
         {
             Id = Guid.NewGuid().ToString();

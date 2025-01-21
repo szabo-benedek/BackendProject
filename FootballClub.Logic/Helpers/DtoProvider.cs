@@ -30,7 +30,6 @@ namespace FootballClub.Logic.Helpers
                     .AfterMap((src, dest) =>
                     {
                         dest.AveragePlayerAge = src.Players?.DefaultIfEmpty().Average(p => p?.Age ?? 0) ?? 0;
-                        //dest.AveragePlayerAge = src.Players?.Average(p => p.Age) ?? 0;
                     });
 
                 cfg.CreateMap<AppUser, UserViewDto>()
